@@ -14,25 +14,29 @@ from nltk.tokenize import sent_tokenize
 warnings.filterwarnings(action='ignore')
 st.set_option('deprecation.showfileUploaderEncoding', False)
 st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_page_config(layout='wide')
 
 # Import the custom modules 
 import text_analysis as nlp
 
 
 # Title of the application 
-st.image('images/Life-After-College.jpg')
+# st.image('images/Life-After-College.jpg')
+st.image('images/Logo-Black.png')
+st.title('Machine Learning Analysis Tool\n', )
 
-st.title('Zhennovate ML Analyzer\n', )
+# TODO: Automate this later with a DB or CSV
+users = ['Jane Doe', 'John Smith']
+dates = ['12-05-2021', '12-12-2021', '12-19-2021']
 
 # Sidebar options
-option = st.sidebar.selectbox('Navigation', 
-["Home",
- "Jane Doe", 
- "John Smith"])
+name = st.sidebar.selectbox('User Selection', ["Home"] + users)
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
-def individual_data_analysis():
+def session_analysis(ses_name, ses_date):
+
+	print('individual analysis for {} on {}'.format(ses_name, ses_date))
 
 	# Ask for text or text file
 	st.header('Enter text:')
@@ -100,14 +104,27 @@ def individual_data_analysis():
 		for i, p in enumerate(phrases):
 			st.write(i+1, p)
 
-if option == 'Home':
+if name == 'Home':
 	st.write(
 			"""
-				Welcome to the Zhennovate Machine Learning Analysis Toolkit! The tool will allow you to analyze a user's behavior for more efficient and \
+				Welcome to the Zhennovate Machine Learning Analysis Tool! The tool will allow you to analyze a user's behavior for more efficient and \
 					data-driven coaching as well as helpful tool for a user's self-reflection. Please begin by selecting a user on the left.
 			"""
 		)
 
-# Word Cloud Feature
-elif option == "Jane Doe":
-	individual_data_analysis()
+else:
+	# Sidebar options
+	page_choice = st.sidebar.selectbox('Page Selection', 
+	["Data Input & Validation",
+	"Individual Session Analysis", 
+	"Overall Data Analysis"])
+
+	if page_choice == "Data Input & Validation":
+		st.write('TBD')
+
+	elif page_choice == "Individual Session Analysis":
+		date_choice = st.selectbox('Select a session date', ['<select>'] + dates)
+		if (date_choice != '<select>'):	session_analysis(name, date_choice)
+
+	elif page_choice == "Overall Data Analysis":
+		st.write('TBD')
