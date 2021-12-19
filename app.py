@@ -34,9 +34,23 @@ name = st.sidebar.selectbox('User Selection', ["Home"] + users)
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
+def question_expanders(questionTitle):
+	with st.expander(questionTitle):
+		st.write("""
+			This is a sample question...
+		""")
+
+		st.write("""
+			This is a sample answer to the sample question...
+		""")
+
+
 def session_analysis(ses_name, ses_date):
 
 	print('individual analysis for {} on {}'.format(ses_name, ses_date))
+
+	for i in range(3):
+		question_expanders('question' + str(i))
 
 	# Ask for text or text file
 	st.header('Enter text:')

@@ -62,7 +62,7 @@ if __name__ == '__main__':
     add_question_answer_details('akosdk', 'robot1', '01', 'Name?', 'Robo 1', datetime.now())
     add_question_answer_details('akosdk', 'robot1', '02', 'Purpose?', 'Spread Butter', datetime.now())
     add_question_answer_details('akosdk', 'robot2', '01', 'Name?', 'Robo 2', datetime.now())
-    add_question_answer_details('akosdk', 'robot1', '02', 'Purpose?', 'Spread Jam', datetime.now())
+    add_question_answer_details('akosdk', 'robot2', '02', 'Purpose?', 'Spread Jam', datetime.now())
 
     print(len(view_all_question_answer_details()))
 
