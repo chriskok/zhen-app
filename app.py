@@ -14,10 +14,16 @@ from nltk.tokenize import sent_tokenize
 warnings.filterwarnings(action='ignore')
 st.set_option('deprecation.showfileUploaderEncoding', False)
 st.set_option('deprecation.showPyplotGlobalUse', False)
-st.set_page_config(layout='wide')
+st.set_page_config(layout='centered')  # can change to 'wide' 
 
 # Import the custom modules 
 import text_analysis as nlp
+
+# Core Pkgs
+import altair as alt
+from datetime import datetime
+import joblib 
+pipe_lr = joblib.load(open("models/emotion_classifier_pipe_lr_03_june_2021.pkl","rb"))
 
 
 # Title of the application 
@@ -33,6 +39,17 @@ dates = ['12-05-2021', '12-12-2021', '12-19-2021']
 name = st.sidebar.selectbox('User Selection', ["Home"] + users)
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
+
+# Fxn
+def predict_emotions(docx):
+	results = pipe_lr.predict([docx])
+	return results[0]
+
+def get_prediction_proba(docx):
+	results = pipe_lr.predict_proba([docx])
+	return results
+
+emotions_emoji_dict = {"anger":"😠","disgust":"🤮", "fear":"😨😱", "happy":"🤗", "joy":"😂", "neutral":"😐", "sad":"😔", "sadness":"😔", "shame":"😳", "surprise":"😮"}
 
 def question_expanders(questionTitle):
 	with st.expander(questionTitle):
@@ -71,6 +88,61 @@ def session_analysis(ses_name, ses_date):
 		# nlp.create_wordcloud(text, mask)
 		nlp.create_wordcloud(text)
 		st.pyplot()
+
+		# Named Entity Recognition 
+		st.header("Named Entity Recognition ")
+		
+		ner = en_core_web_sm.load()
+		doc = ner(str(text))
+
+		# Display 
+		spacy_streamlit.visualize_ner(doc, labels=ner.get_pipe('ner').labels)
+
+		# Sentiment Analysis
+		st.header("Sentiment Analysis")
+
+		# add_page_visited_details("Home",datetime.now())
+		st.subheader("Home-Emotion In Text")
+
+		col1,col2  = st.columns(2)
+
+		# Apply Fxn Here
+		prediction = predict_emotions(text)
+		probability = get_prediction_proba(text)
+		
+		# add_prediction_details(raw_text,prediction,np.max(probability),datetime.now())
+
+		with col1:
+			st.success("Original Text")
+			st.write(text)
+
+			st.success("Prediction")
+			emoji_icon = emotions_emoji_dict[prediction]
+			st.write("{}:{}".format(prediction,emoji_icon))
+			st.write("Confidence:{}".format(np.max(probability)))
+
+		with col2:
+			st.success("Prediction Probability")
+			# st.write(probability)
+			proba_df = pd.DataFrame(probability,columns=pipe_lr.classes_)
+			# st.write(proba_df.T)
+			proba_df_clean = proba_df.T.reset_index()
+			proba_df_clean.columns = ["emotions","probability"]
+
+			fig = alt.Chart(proba_df_clean).mark_bar().encode(x='emotions',y='probability',color='emotions')
+			st.altair_chart(fig,use_container_width=True)
+
+		# Keyword extraction 
+		r = Rake(language='english')
+		r.extract_keywords_from_text(text)
+		
+		# Get the important phrases
+		phrases = r.get_ranked_phrases()
+
+		# Display the important phrases
+		st.write("These are the top 10 **keywords** causing the above sentiment:")
+		for i, p in enumerate(phrases[:10]):
+			st.write(i+1, p)
 		
 		# N-GRAM ANALYSIS
 		st.header("N-Gram Analysis")
@@ -83,15 +155,6 @@ def session_analysis(ses_name, ses_date):
 		# Plot the ngrams
 		nlp.plot_ngrams(text, n=n, topk=topk)
 		st.pyplot()
-
-		# Named Entity Recognition 
-		st.header("Named Entity Recognition ")
-		
-		ner = en_core_web_sm.load()
-		doc = ner(str(text))
-
-		# Display 
-		spacy_streamlit.visualize_ner(doc, labels=ner.get_pipe('ner').labels)
 		
 		# Part of Speech Tagging 
 		st.header("Part of Speech Tagging")
@@ -102,21 +165,6 @@ def session_analysis(ses_name, ses_date):
 
 		st.markdown("The tags can be referenced from here:")
 		st.image('images/Penn_Treebank.png')
-
-		# Sentiment Analysis
-		st.header("Sentiment Analysis")
-
-		# Keyword extraction 
-		r = Rake(language='english')
-		r.extract_keywords_from_text(text)
-		
-		# Get the important phrases
-		phrases = r.get_ranked_phrases()
-
-		# Display the important phrases
-		st.write("These are the **keywords** causing the above sentiment:")
-		for i, p in enumerate(phrases):
-			st.write(i+1, p)
 
 if name == 'Home':
 	st.write(
