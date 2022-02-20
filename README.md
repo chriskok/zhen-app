@@ -8,10 +8,11 @@ Machine Learning Application for [Zhennovate](https://zhennovate.com/). Using na
 - run `conda env create -f environment.yml`
 
 ## Usage
+- run `conda activate zhen`
 - run `streamlit run app.py`
 
 ## Dev Notes
-- when new libraries are installed, run `conda env export > environment.yml`
+- when new libraries are installed, run `conda env export --name zhen --from-history --file environment.yml`
 
 ## TODO
 - Determine data input and design (which stats would be useful for a user or coach to see)
