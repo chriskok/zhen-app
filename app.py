@@ -89,9 +89,7 @@ def session_analysis(ses_name, ses_date):
 		nlp.create_wordcloud(text)
 		st.pyplot()
 
-		# Named Entity Recognition 
-		st.header("Named Entity Recognition ")
-		
+		# Named Entity Recognition 		
 		ner = en_core_web_sm.load()
 		doc = ner(str(text))
 
@@ -100,9 +98,6 @@ def session_analysis(ses_name, ses_date):
 
 		# Sentiment Analysis
 		st.header("Sentiment Analysis")
-
-		# add_page_visited_details("Home",datetime.now())
-		st.subheader("Home-Emotion In Text")
 
 		col1,col2  = st.columns(2)
 
