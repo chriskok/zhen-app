@@ -83,6 +83,15 @@ def session_analysis(ses_name, ses_date):
 		# Plot the ngrams
 		nlp.plot_ngrams(text, n=n, topk=topk)
 		st.pyplot()
+
+		# Named Entity Recognition 
+		st.header("Named Entity Recognition ")
+		
+		ner = en_core_web_sm.load()
+		doc = ner(str(text))
+
+		# Display 
+		spacy_streamlit.visualize_ner(doc, labels=ner.get_pipe('ner').labels)
 		
 		# Part of Speech Tagging 
 		st.header("Part of Speech Tagging")
@@ -93,15 +102,6 @@ def session_analysis(ses_name, ses_date):
 
 		st.markdown("The tags can be referenced from here:")
 		st.image('images/Penn_Treebank.png')
-
-		# Named Entity Recognition 
-		st.header("Named Entity Recognition ")
-		
-		ner = en_core_web_sm.load()
-		doc = ner(str(text))
-
-		# Display 
-		spacy_streamlit.visualize_ner(doc, labels=ner.get_pipe('ner').labels)
 
 		# Sentiment Analysis
 		st.header("Sentiment Analysis")

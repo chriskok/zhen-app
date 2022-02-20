@@ -5,17 +5,14 @@ Machine Learning Application for [Zhennovate](https://zhennovate.com/). Using na
 - [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html)
 
 ## Environment Setup
-- run `conda env create -n zhen tensorflow`
-- run `conda activate zhen`
-- run `conda env update --file environment.yml`
-- run `pip install -r requirements.txt`
+- run `conda env create -f windows-environment.yml`
 
 ## Usage
 - run `conda activate zhen`
 - run `streamlit run app.py`
 
 ## Dev Notes
-- when new libraries are installed, run `conda env export --name zhen --from-history --file environment.yml` and `pip freeze > requirements.txt`
+- when new libraries are installed, run `conda env export --name zhen --file windows-environment.yml`
 
 ## TODO
 - Determine data input and design (which stats would be useful for a user or coach to see)
