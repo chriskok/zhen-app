@@ -26,6 +26,7 @@ Machine Learning Application for [Zhennovate](https://zhennovate.com/). Using na
     - aggregate of emotion
     - [document similarity](https://towardsdatascience.com/calculating-document-similarities-using-bert-and-other-models-b2c1a29c9630) or [text similarity](https://medium.com/@adriensieg/text-similarities-da019229c894) to [soft skills](https://resources.workable.com/hr-terms/what-are-soft-skills)
   - Initial ideas for overall: 
-    - emotion over time
-    - topics covered pie/line chart
+    - emotion over time or accross sessions
+    - emotions felt when talking about certain named entities (in same paragraph or same day)
+    - topics covered pie/line chart over all time or split by sessions
     - NER over time?
