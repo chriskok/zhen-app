@@ -9,6 +9,7 @@ from rake_nltk import Rake
 import spacy_streamlit
 import en_core_web_sm
 from nltk.tokenize import sent_tokenize
+import matplotlib.pyplot as plt
 
 # Warnings ignore 
 warnings.filterwarnings(action='ignore')
@@ -161,6 +162,20 @@ def session_analysis(ses_name, ses_date):
 		st.markdown("The tags can be referenced from here:")
 		st.image('images/Penn_Treebank.png')
 
+def overall_analysis():
+
+	data = {'anger': 10, 'happy': 15, 'sadness': 5, 'shame': 20}
+	names = list(data.keys())
+	values = list(data.values())
+
+	fig, axs = plt.subplots(1, 3, figsize=(9, 3), sharey=True)
+	axs[0].bar(names, values)
+	axs[1].scatter(names, values)
+	axs[2].plot(names, values)
+	fig.suptitle('Categorical Plotting')
+
+	st.pyplot(fig)
+
 if name == 'Home':
 	st.write(
 			"""
@@ -184,4 +199,4 @@ else:
 		if (date_choice != '<select>'):	session_analysis(name, date_choice)
 
 	elif page_choice == "Overall Data Analysis":
-		st.write('TBD')
+		overall_analysis()
